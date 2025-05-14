@@ -2,7 +2,7 @@ name: Build and Push Docker image to ECR
 
 on:
   push:
-    branches: [main]  # Or 'master' depending on your repo
+    branches: [main]  # Adjust if your default branch is named differently
 
 jobs:
   build-and-push:
@@ -17,18 +17,17 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_REGION }}
+        aws-region: ap-southeast-2
 
     - name: Log in to Amazon ECR
-      id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
     - name: Build Docker image
       run: |
-        IMAGE_URI=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}
+        IMAGE_URI=173898094405.dkr.ecr.ap-southeast-2.amazonaws.com/rodmanr90/githubactions
         docker build -t $IMAGE_URI .
-    
-    - name: Push image to Amazon ECR
+
+    - name: Push Docker image
       run: |
-        IMAGE_URI=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}
+        IMAGE_URI=173898094405.dkr.ecr.ap-southeast-2.amazonaws.com/rodmanr90/githubactions
         docker push $IMAGE_URI
